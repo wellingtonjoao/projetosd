@@ -1,26 +1,11 @@
 <html>
     <head>
-    <title>ViaCEP Webservice</title>
+    <title>Buscar CEP</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-    *{
-        font-family: segoe ui;
-    }
-     
-    label{
-        display: table;
-        padding: 10px;
-    }
-     
-    input{
-        padding: 5px;
-    }
-     
-    input[type="text"]{
-        max-width:400px;
-        width:100%;
-    }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
     
     <!-- Adicionando JQuery -->
@@ -29,110 +14,44 @@
             crossorigin="anonymous"></script>
 
     <!-- Adicionando Javascript -->
-    <script>
+  <script>
+    var Lista = document.querySelector('ul');
 
-        $(document).ready(function() {
+    fetch('api.json')
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("HTTP error, status = " + response.status);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+      for(var i = 0; i < json.endereco.length; i++) {
+        var listItem = document.createElement('li');
+        listItem.innerHTML = '<strong>' + json.endereco[i].cep + '</strong>';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].logradouro + '.';
+        listItem.innerHTML +=' Cost: <strong>£' + json.endereco[i].complemento + '</strong>';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].bairro + '.';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].localidade + '</strong>';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].uf + '.';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].ibge + '</strong>';
 
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-                $("#ibge").val("");
-            }
-            
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function() {
-
-                //Nova variável "cep" somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, '');
-
-                //Verifica se campo cep possui valor informado.
-                if (cep != "") {
-
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
-
-                    //Valida o formato do CEP.
-                    if(validacep.test(cep)) {
-
-                        //Preenche os campos com "..." enquanto consulta webservice.
-                        $("#rua").val("...");
-                        $("#bairro").val("...");
-                        $("#cidade").val("...");
-                        $("#uf").val("...");
-                        $("#ibge").val("...");
-
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON("https://hopeful-bose-6183ea.netlify.app/api.json", function(dados) {
-
-                            if (!("erro" in dados)) {
-                                //Atualiza os campos com os valores da consulta.
-                                $("#rua").val(dados.logradouro);
-                                $("#bairro").val(dados.bairro);
-                                $("#cidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
-                                $("#ibge").val(dados.ibge);
-                            } //end if.
-                            else {
-                                //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
-                            }
-                        });
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido.");
-                    }
-                } //end if.
-                else {
-                    //cep sem valor, limpa formulário.
-                    limpa_formulário_cep();
-                }
-            });
-        });
+        Lista.appendChild(listItem);
+      }
+    })
+    .catch(function(error) {
+      var p = document.createElement('p');
+      p.appendChild(
+        document.createTextNode('Error: ' + error.message)
+      );
+      document.body.insertBefore(p,Lista);
+      document.body.insertBefore(p, Lista);
+    });
 
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.4/jszip.min.js"  type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.js" ></script>
-
-    <script>
-        function salvar() {
-           let cep = document.getElementById("cep").value;
-           let rua  = document.getElementById("Rua").value;
-           let bairro  = document.getElementById("Bairro").value;
-           let cidade = document.getElementById("Cidade").value;
-           let estado = document.getElementById("Estado").value;
-           let ibge = document.getElementById("IBGE").value;
-           let blob = new Blob([texto], { type: "text/plain;charset=utf-8" });
-           saveAs(blob, Cidade + ".txt");
-        }
-        </script>
     </head>
 
     <body>
-
-    <!-- Inicio do formulario -->
-      <form method="get" action=".">
-        <p>Informe o CEP para buscar automática as demais informações.</p>
-        <label>CEP:
-        <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" /></label><br />
-        <label>Rua: <br>
-        <input name="rua" type="text" id="rua" size="60" /></label><br />
-        <label>Bairro:
-        <input name="bairro" type="text" id="bairro" size="40" /></label><br />
-        <label>Cidade:
-        <input name="cidade" type="text" id="cidade" size="40" /></label><br />
-        <label>Estado:
-        <input name="uf" type="text" id="uf" size="2" /></label><br />
-        <label>IBGE:
-        <input name="ibge" type="text" id="ibge" size="8" /></label><br />
-        <br>
-            <button type="button" onclick="salvar()" >Salvar</button> 
-      </form>
+  
     </body>
 
     </html>
