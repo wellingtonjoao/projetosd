@@ -18,25 +18,34 @@
     </head>
 
     <body>
-<script>
-  var jqxhr = $.getJSON( "api.json", function() {
-  console.log( "success" );
-})
-  .done(function() {
-    console.log( "second success" );
-  })
-  .fail(function() {
-    console.log( "error" );
-  })
-  .always(function() {
-    console.log( "complete" );
-  });
- 
+<  <script>
+    var myList = document.querySelector('ul');
 
-jqxhr.always(function() {
-  console.log( "second complete" );
-});
-</script>
+    fetch(api.json')
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("HTTP error, status = " + response.status);
+      }
+      return response.json();
+    })
+    .then(function(json) {
+      for(var i = 0; i < json.endereco.length; i++) {
+        var listItem = document.createElement('li');
+        listItem.innerHTML = '<strong>' + json.endereco[i].cpe + '</strong>';
+        listItem.innerHTML +=' can be found in ' + json.endereco[i].localidade + '.';
+        listItem.innerHTML +=' Cost: <strong>£' + json.endereco[i].bairro + '</strong>';
+        myList.appendChild(listItem);
+      }
+    })
+    .catch(function(error) {
+      var p = document.createElement('p');
+      p.appendChild(
+        document.createTextNode('Error: ' + error.message)
+      );
+      document.body.insertBefore(p, myList);
+    });
+
+  </script>
     </body>
 
     </html>
