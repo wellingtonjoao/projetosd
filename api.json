@@ -1,1 +1,24 @@
-{"bairro": "Mauriti", "cidade": "Cabo de Santo Agostinho", "logradouro": "2\u00aa Travessa Doutor J\u00falio Pires Ferreira", "estado_info": {"area_km2": "98.076,001", "codigo_ibge": "26", "nome": "Pernambuco"}, "cep": "54530121", "cidade_info": {"area_km2": "448,735", "codigo_ibge": "2602902"}, "estado": "PE"}
+{
+    "cep": "51150-185",
+    "logradouro": "Rua São José",
+    "complemento": "(Ia de Deus)",
+    "bairro": "Imbiribeira",
+    "localidade": "Recife",
+    "uf": "PE",
+    "ibge": "2611606",
+    "gia": "",
+    "ddd": "81",
+    "siafi": "2531"
+  },
+  {
+    "cep": "52071-241",
+    "logradouro": "Rua São José",
+    "complemento": "",
+    "bairro": "Alto do Mandu",
+    "localidade": "Recife",
+    "uf": "PE",
+    "ibge": "2611606",
+    "gia": "",
+    "ddd": "81",
+    "siafi": "2531"
+  }
