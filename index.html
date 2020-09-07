@@ -3,9 +3,7 @@
     <title>Buscar CEP</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="style.css">
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  
 
     
     <!-- Adicionando JQuery -->
@@ -14,47 +12,31 @@
             crossorigin="anonymous"></script>
 
     <!-- Adicionando Javascript -->
-  <script>
-    var Lista = document.querySelector('ul');
-
-    fetch('./api.json')
-    .then((response) =>{response.json()})
-    .then(function(response) {
-      if (!response.ok) {
-        throw new Error("HTTP error, status = " + response.status);
-      }
-      return response.json();
-    })
-    .then(function(json) {
-      for(var i = 0; i < json.endereco.length; i++) {
-             var listItem = document.createElement('li');
-        listItem.innerHTML = '<strong>' + json.endereco[i].cep + '</strong>';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].logradouro + '.';
-        listItem.innerHTML +=' Cost: <strong>£' + json.endereco[i].complemento + '</strong>';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].bairro + '.';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].localidade + '</strong>';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].uf + '.';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].ibge + '</strong>';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].gia+ '.';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].ddd + '</strong>';
-        listItem.innerHTML +=' can be found in ' + json.endereco[i].siafi+ '.';
-
-        Lista.appendChild(listItem);
-      }
-    })
-    .catch(function(error) {
-      var p = document.createElement('p');
-      p.appendChild(
-        document.createTextNode('Error: ' + error.message)
-      );
-      document.body.insertBefore(p,Lista);
-      });
-
-    </script>
+ 
+  
+  
     </head>
 
     <body>
-  
+<script>
+  var jqxhr = $.getJSON( "api.json", function() {
+  console.log( "success" );
+})
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+ 
+
+jqxhr.always(function() {
+  console.log( "second complete" );
+});
+</script>
     </body>
 
     </html>
